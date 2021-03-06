@@ -1,0 +1,31 @@
+{
+  "name": "bloglist-backend",
+  "version": "1.0.0",
+  "description": "this project is for part4 of fullStackOpen course",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/usman-siddiqui089/fullStackOpen-part4.git"
+  },
+  "author": "Usman Siddiqui",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/usman-siddiqui089/fullStackOpen-part4/issues"
+  },
+  "homepage": "https://github.com/usman-siddiqui089/fullStackOpen-part4#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.19",
+    "morgan": "^1.10.0"
+  }
+}
