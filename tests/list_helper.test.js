@@ -73,3 +73,28 @@ describe('max liked blog', () => {
         expect(result).toEqual(maxLikedBlog)
     })
 })
+
+describe('max blogs of author', () => {
+    const blogs = [
+        {
+            author: 'James',
+            blogs: 5
+        },
+        {
+            author: 'Jarvis',
+            blogs: 10
+        },
+        {
+            author: 'David',
+            blogs: 11
+        }
+    ]
+    
+    const expectedResult = {
+        author: 'David',
+        blogs: 11
+    }
+
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual(expectedResult)
+})
