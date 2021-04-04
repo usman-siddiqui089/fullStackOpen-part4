@@ -1,8 +1,29 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-
+const Blog = require('../models/blog')
 const api = supertest(app)
+const initialBlogs = [
+    {
+        title : "New Blog 1",
+        author : "Austin",
+        url : "https://newblog.com",
+        likes : 100
+    },
+    {
+        title : "Latest Blog",
+        author : "Jeff",
+        url : "https://jeffblogs.com",
+        likes : 10
+    }
+]
+beforeEach(async () => {
+    await Blog.deleteMany({})
+    const blogsArr = initialBlogs
+        .map(blog => new Blog(blog))
+    const promiseArr = blogsArr.map(blog => blog.save())
+    await Promise.all(promiseArr)
+})
 
 test('returns correct amount of blogs', async () => {
     const response = await api
@@ -19,7 +40,7 @@ test('blog contains valid id', async () => {
     })
 })
 
-test.only('a blog is added successfully', async () => {
+test('a blog is added successfully', async () => {
     const blogsBeforePost = await api.get('/api/blogs')
     const newBlog = {
         title : "Another good blog",
@@ -38,6 +59,20 @@ test.only('a blog is added successfully', async () => {
 
     const titles = blogsAtEnd.body.map(blog => blog.title)
     expect(titles).toContain('Another good blog')
+})
+
+test.only('blog post without likes', async () => {
+    const newBlog = {
+        title : "Blog without likes",
+        author : "Anonymous",
+        url : "https://anonymous-blog.com"
+    }
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+    expect(response.body.likes).toEqual(0)
 })
 
 afterAll(() => {
