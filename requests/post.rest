@@ -2,7 +2,7 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-    "title" : "Blog without likes",
-    "author" : "Anonymous",
-    "url" : "https://anonymousblog.com"
+    "title" : "Harry Potter and Friends",
+    "author" : "Rowling",
+    "url" : "https://hp.com" 
 }

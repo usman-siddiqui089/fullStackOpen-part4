@@ -61,7 +61,7 @@ test('a blog is added successfully', async () => {
     expect(titles).toContain('Another good blog')
 })
 
-test.only('blog post without likes', async () => {
+test('blog post without likes', async () => {
     const newBlog = {
         title : "Blog without likes",
         author : "Anonymous",
@@ -73,6 +73,17 @@ test.only('blog post without likes', async () => {
         .expect(201)
         .expect('Content-Type', /application\/json/)
     expect(response.body.likes).toEqual(0)
+})
+
+test.only('blog without url and title', async () => {
+    const newBlog = {
+        author : "Anonymous",
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
 })
 
 afterAll(() => {
