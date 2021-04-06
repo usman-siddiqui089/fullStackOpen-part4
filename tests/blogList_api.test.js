@@ -82,7 +82,7 @@ test('blog without url and title', async () => {
         .expect(400)
 })
 
-test.only('a valid blog can be deleted', async () => {
+test('a valid blog can be deleted', async () => {
     const blogsAtStart = await api.get('/api/blogs')
     const blogID = blogsAtStart.body[0].id
 
@@ -92,6 +92,23 @@ test.only('a valid blog can be deleted', async () => {
 
     const result = await api.get('/api/blogs')
     expect(result.body).toHaveLength(blogsAtStart.body.length - 1)
+})
+
+test.only('a valid blog can be modified', async () => {
+    const blogsAtStart = await api.get('/api/blogs')
+    const blogID = blogsAtStart.body[0].id
+    const newBlogLikes = {
+        likes : 1000
+    }
+
+    await api
+        .put(`/api/blogs/${blogID}`)
+        .send(newBlogLikes)
+        .expect(200)
+
+    const blogsAtEnd = await api.get('/api/blogs')
+    const likes = blogsAtEnd.body.map(blog => blog.likes)
+    expect(likes).toContain(1000)
 })
 
 afterAll(() => {
