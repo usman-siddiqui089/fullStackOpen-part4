@@ -19,10 +19,7 @@ const initialBlogs = [
 ]
 beforeEach(async () => {
     await Blog.deleteMany({})
-    const blogsArr = initialBlogs
-        .map(blog => new Blog(blog))
-    const promiseArr = blogsArr.map(blog => blog.save())
-    await Promise.all(promiseArr)
+    await Blog.insertMany(initialBlogs)
 })
 
 test('returns correct amount of blogs', async () => {
@@ -75,15 +72,26 @@ test('blog post without likes', async () => {
     expect(response.body.likes).toEqual(0)
 })
 
-test.only('blog without url and title', async () => {
+test('blog without url and title', async () => {
     const newBlog = {
         author : "Anonymous",
     }
-
     await api
         .post('/api/blogs')
         .send(newBlog)
         .expect(400)
+})
+
+test.only('a valid blog can be deleted', async () => {
+    const blogsAtStart = await api.get('/api/blogs')
+    const blogID = blogsAtStart.body[0].id
+
+    await api
+        .delete(`/api/blogs/${blogID}`)
+        .expect(204)
+
+    const result = await api.get('/api/blogs')
+    expect(result.body).toHaveLength(blogsAtStart.body.length - 1)
 })
 
 afterAll(() => {
