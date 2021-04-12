@@ -2,9 +2,10 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-    "title" : "Harry Potter and Friends",
+    "title" : "Harry Potter: Wizards",
     "author" : "Rowling",
-    "url" : "https://hp.com" 
+    "url" : "https://hp.com",
+    "userId": "60740d8fca476582d558b915" 
 }
 
 ###
