@@ -6,3 +6,13 @@ Content-Type: application/json
     "author" : "Rowling",
     "url" : "https://hp.com" 
 }
+
+###
+POST http://localhost:3003/api/users/
+Content-Type: application/json
+
+{
+    "username": "root",
+    "name": "Admin User",
+    "password": "secretAdminPass"
+}
