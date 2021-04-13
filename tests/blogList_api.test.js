@@ -45,34 +45,36 @@ describe('verify existing blogs in db', () => {
 describe.only('verify addition of blogs in db', () => {
     beforeEach(async () => {
         await User.deleteMany({})
-        const passwordHash = await bcrypt.hash('secretPass', 10)
-        const newUser = new User({
-            username: 'root',
-            name: 'Admin User',
-            passwordHash
-        })
-        await newUser.save()
-    })
-    test('a blog is added successfully', async () => {
-        const user = await User.find({})
-        const userForToken = {
-            username: user.username,
-            id: user._id
+        const newUser = {
+            username: 'janedoez',
+            name: 'Jane Z. Doe',
+            password: 'password',
+          }
+      
+        await api
+            .post('/api/users')
+            .send(newUser)
+      
+        const result = await api
+            .post('/api/login')
+            .send(newUser)
+      
+        headers = {
+            'Authorization': `bearer ${result.body.token}`
         }
-        const token = jwt.sign(userForToken, process.env.SECRET)
-        
+    })
+    test('a blog is added successfully', async () => { 
         const blogsBeforePost = await api.get('/api/blogs')
         const newBlog = {
             title : "Another good blog",
             author : "David",
             url : "https://blog.com",
             likes : 90,
-            user: user._id
         }
         await api
             .post('/api/blogs')
-            .set('Authorization', 'Bearer ' + token)
             .send(newBlog)
+            .set(headers)
             .expect(201)
             .expect('Content-Type', /application\/json/)
     
