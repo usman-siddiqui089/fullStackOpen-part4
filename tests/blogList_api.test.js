@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
@@ -45,34 +44,36 @@ describe('verify existing blogs in db', () => {
 describe.only('verify addition of blogs in db', () => {
     beforeEach(async () => {
         await User.deleteMany({})
-        const passwordHash = await bcrypt.hash('secretPass', 10)
-        const newUser = new User({
-            username: 'root',
-            name: 'Admin User',
-            passwordHash
-        })
-        await newUser.save()
-    })
-    test('a blog is added successfully', async () => {
-        const user = await User.find({})
-        const userForToken = {
-            username: user.username,
-            id: user._id
+        const newUser = {
+            username: 'secretUser',
+            name: 'Secret User',
+            password: 'secretPassword',
+          }
+      
+        await api
+            .post('/api/users')
+            .send(newUser)
+      
+        const result = await api
+            .post('/api/login')
+            .send(newUser)
+      
+        headers = {
+            'Authorization': `bearer ${result.body.token}`
         }
-        const token = jwt.sign(userForToken, process.env.SECRET)
-        
+    })
+    test('a blog is added successfully', async () => { 
         const blogsBeforePost = await api.get('/api/blogs')
         const newBlog = {
             title : "Another good blog",
             author : "David",
             url : "https://blog.com",
             likes : 90,
-            user: user._id
         }
         await api
             .post('/api/blogs')
-            .set('Authorization', 'Bearer ' + token)
             .send(newBlog)
+            .set(headers)
             .expect(201)
             .expect('Content-Type', /application\/json/)
     
@@ -83,19 +84,20 @@ describe.only('verify addition of blogs in db', () => {
         expect(titles).toContain('Another good blog')
     })
 
-    // test('blog post without likes', async () => {
-    //     const newBlog = {
-    //         title : "Blog without likes",
-    //         author : "Anonymous",
-    //         url : "https://anonymous-blog.com"
-    //     }
-    //     const response = await api
-    //         .post('/api/blogs')
-    //         .send(newBlog)
-    //         .expect(201)
-    //         .expect('Content-Type', /application\/json/)
-    //     expect(response.body.likes).toEqual(0)
-    // })
+    test('blog post without likes', async () => {
+        const newBlog = {
+            title : "Blog without likes",
+            author : "Anonymous",
+            url : "https://anonymous-blog.com"
+        }
+        const response = await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .set(headers)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        expect(response.body.likes).toEqual(0)
+    })
 
     test('blog without token', async () => {
         const newBlog = {
