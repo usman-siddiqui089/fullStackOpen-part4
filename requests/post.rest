@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs/
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWQiOiI2MDc0MTE4MWUyZjgwYTg0NjI3ZjI1OWQiLCJpYXQiOjE2MTgyNDYyOTN9.1_hSjEs7OG3YaQKWZiyokxPR2e_YqNiA5eCSrd4VW-o
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWQiOiI2MDc0MTE4MWUyZjgwYTg0NjI3ZjI1OWQiLCJpYXQiOjE2MTgzMzc4OTV9.LMmROzpeTE05yaelS4ndj122oEWhAAGytRwQZBWEs4A
 
 {
     "title" : "Magic Mania",
