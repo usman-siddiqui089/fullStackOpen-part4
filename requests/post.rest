@@ -1,0 +1,28 @@
+POST http://localhost:3003/api/blogs/
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN1cGVydXNlciIsImlkIjoiNjA3NDBkOGZjYTQ3NjU4MmQ1NThiOTE1IiwiaWF0IjoxNjE4MzQyMzk1fQ.MqIjs3k3wLtwRr2SC5BUIYrBYLTs0xv2d2tHjfXrrFY
+
+{
+    "title" : "Magic Mania1",
+    "author" : "Beat",
+    "url" : "https://beats.com"
+}
+
+###
+POST http://localhost:3003/api/users/
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "name": "Test User",
+    "password": "te"
+}
+
+###
+POST http://localhost:3003/api/login/
+Content-Type: application/json
+
+{
+    "username": "superuser",
+    "password": "secretSuperPass"
+}
