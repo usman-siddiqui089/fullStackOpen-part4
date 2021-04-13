@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
@@ -46,9 +45,9 @@ describe.only('verify addition of blogs in db', () => {
     beforeEach(async () => {
         await User.deleteMany({})
         const newUser = {
-            username: 'janedoez',
-            name: 'Jane Z. Doe',
-            password: 'password',
+            username: 'secretUser',
+            name: 'Secret User',
+            password: 'secretPassword',
           }
       
         await api
@@ -85,19 +84,20 @@ describe.only('verify addition of blogs in db', () => {
         expect(titles).toContain('Another good blog')
     })
 
-    // test('blog post without likes', async () => {
-    //     const newBlog = {
-    //         title : "Blog without likes",
-    //         author : "Anonymous",
-    //         url : "https://anonymous-blog.com"
-    //     }
-    //     const response = await api
-    //         .post('/api/blogs')
-    //         .send(newBlog)
-    //         .expect(201)
-    //         .expect('Content-Type', /application\/json/)
-    //     expect(response.body.likes).toEqual(0)
-    // })
+    test('blog post without likes', async () => {
+        const newBlog = {
+            title : "Blog without likes",
+            author : "Anonymous",
+            url : "https://anonymous-blog.com"
+        }
+        const response = await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .set(headers)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        expect(response.body.likes).toEqual(0)
+    })
 
     test('blog without token', async () => {
         const newBlog = {
